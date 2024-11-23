@@ -9,7 +9,21 @@ import dotenv from "dotenv"
 dotenv.config({
     path: './env'
 })
-connectDB();
+connectDB()// as this fun is async it will return a promise
+.then(()=>{
+
+    app.on("error", (error)=>{
+        console.log("ERROR: ",error);
+        throw error
+    })
+
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`Server is running at ${process.env.PORT}`);
+    })
+})
+.catch((err)=>{
+    console.log("MONGODB connection failed !!!!!", err);
+})
 
 
 
